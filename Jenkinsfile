@@ -1,5 +1,5 @@
 agentName = "Windows"
-agentLabel = "${println 'Right Now the Agent Name is ' + agentName; return agentName}"
+agentLabel = "${-> println 'Right Now the Agent Name is ' + agentName; return agentName}"
 
 pipeline {
     agent none
@@ -21,15 +21,16 @@ pipeline {
             }
         }
         stage('Final') {
-            agent { label agentLabel }
 
             steps {
+                node( agentLabel as String ) {  // Evaluate the node label later
+                    echo "TEST"
+                }
                 script {
                     println agentLabel
                     println agentName
                 }
             }
-    }
-
+        }
     }
 }

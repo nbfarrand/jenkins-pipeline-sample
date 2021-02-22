@@ -1,22 +1,35 @@
+agentName = "Windows"
+agentLabel = "${println 'Right Now the Agent Name is ' + agentName; return agentName}"
+
 pipeline {
-  agent {
-    docker 'node:7.10-alpine'
-  }
-  stages {
-    stage('Build') {
-      agent {
-        label 'k8'
-      }
-      steps {
-        echo 'Building..'
-        sh 'npm install'
-      }
+    agent none
+
+    stages {
+        stage('Prep') {
+            steps {
+                script {
+                    agentName = "Linux"
+                }
+            }
+        }
+        stage('Checking') {
+            steps {
+                script {
+                    println agentLabel
+                    println agentName
+                }
+            }
+        }
+        stage('Final') {
+            agent { label agentLabel }
+
+            steps {
+                script {
+                    println agentLabel
+                    println agentName
+                }
+            }
     }
-    stage('Test') {
-      steps {
-        echo 'Testing..'
-        sh 'npm t'
-      }
+
     }
-  }
 }

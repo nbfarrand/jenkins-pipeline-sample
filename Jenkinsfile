@@ -1,5 +1,6 @@
 pipeline {
   agent {
+    node { label 'k8' }
     docker {
        image 'node:7.10-alpine'
        label 'k8'
